@@ -1,0 +1,59 @@
+Digital Signatures Algorithm is a FIPS (Federal Information Processing Standard) for digital signatures. It was proposed in 1991 and globally standardized in 1994 by the National Institute of Standards and Technology (NIST). It functions on the framework of modular exponentiation and discrete logarithmic problems, which are difficult to compute as a force-brute system.
+
+DSA Algorithm provides three benefits, which are as follows:
+
+Message Authentication: You can verify the origin of the sender using the right key combination.
+Integrity Verification: You cannot tamper with the message since it will prevent the bundle from being decrypted altogether.
+Non-repudiation: The sender cannot claim they never sent the message if verifies the signature.
+
+Steps in DSA Algorithm
+Keeping the image above in mind, go ahead and see how the entire process works, starting from creating the key pair to verifying the signature at the end.
+
+1. Key Generation
+There are two steps in the key generation process: parameter generation and per-user keys.
+
+Parameter Generation
+Initially a user needs to choose a cryptographic hash function (H) along with output length in bits |H|. Modulus length N is used in when output length |H| is greater.
+Then choose a key length L where it should be multiple of 64 and lie in between 512 and 1024 as per Original DSS length. However, lengths 2048 or 3072 are recommended by NIST for lifetime key security.
+The values of L and N need to be chosen in between (1024, 60), (2048, 224), (2048, 256), or (3072, 256) according to FIPS 186-4. Also, a user should chose modulus length N in such a way that modulus length N should be less than key length (N<L) and less than and equal to output length (N<=|H|).
+Later a user can choose a prime number q of N bit and another prime number as p of L bit in such a way that p-1 is multiple of q. And then choose h as an integer from the list ( 2……..p-2).
+Once you get p and q values, find out
+g = h^(p-1)/q*mod(p). If you get g = 1, please try another value for h and compute again for g except 1.
+
+p, q and g are the algorithm parameters that are shared amongst different users of the systems.
+
+Per-user Keys
+To compute the key parameters for a single user, first choose an integer x (private key) from the list (1…….q-1), then compute the public key, y=g^(x)*mod(p).
+
+2. Signature Generation
+It passes the original message (M) through the hash function (H#) to get our hash digest(h).
+It passes the digest as input to a signing function, whose purpose is to give two variables as output, s, and r.
+Apart from the digest, you also use a random integer k such that 0 < k < q.
+To calculate the value of r, you use the formula r = (gk mod p) mod q.
+To calculate the value of s, you use the formula s = [K-1(h+x . R)mod q].
+It then packages the signature as {r,s}.
+The entire bundle of the message and signature {M,r,s} are sent to the receiver.
+3. Key Distribution
+While distributing keys, a signer should keep the private key (x) secret and publish the public key (y) and send the public key (y) to the receiver without any secret mechanism.
+
+Signing
+Signing of message m should be done as follows:
+
+first choose an integer k from (1……q-1)
+compute
+r = g^(k)*mod(p)*mod(q). If you get r = 0, please try another random value of k and compute again for r except 0.
+
+Calculate
+s=(k^(-1)*(H(m)+xr))*mod(q). If you get s = 0, please try another random value of k and compute again for s except 0.
+
+The signature is defined by two key elements (r,s). Also, key elements k and r are used to create a new message. Nevertheless, computing r with modular exponential process is a very expensive process and computed before the message is known. Computation is done with the help of the Euclidean algorithm and Fermat's little theorem.
+4. Signature Verification
+You use the same hash function (H#) to generate the digest h.
+You then pass this digest off to the verification function, which needs other variables as parameters too.
+Compute the value of w such that: s*w mod q = 1
+Calculate the value of u1 from the formula, u1 = h*w mod q
+Calculate the value of u2 from the formula, u2 = r*w mod q
+The final verification component v is calculated as v = [((gu1 . yu2) mod p) mod q].
+It compares the value of v to the value of r received in the bundle.
+If it matches, the signature verification is complete.
+Having understood the functionality of the DSA Algorithm, you must know the advantages this algorithm offers over alternative standards like the RSA algorithm.

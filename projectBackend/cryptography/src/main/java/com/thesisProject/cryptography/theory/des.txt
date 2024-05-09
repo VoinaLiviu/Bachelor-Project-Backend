@@ -1,0 +1,17 @@
+Every DES encryption or decryption process has eight steps, decryption being achieved by reversing the encryption process. The first step is to convert the key and the plaintext into bits. After being converted, both the plaintext and the key have to be split into 64 bits blocks.
+
+The DES encryption process is made out of the following steps:
+    Taking a 64-bit long plaintext and a 56-bit long encryption key with 8 bits of parity, in order to produce a 64-bit long result.
+    The plain text block's bits are shifted around.
+    The 8 parity bits are removed from the key by subjecting the key to its permutation.
+    The plain text is then processed as follows:
+        The key is split in two, each half containing 28 bits.
+        The bits from each half are shifted by one or two bits.
+        The halves are recombined and subject to a compression permutation, reducing the key length from 56 to 48 bits. The compressed key is used to encrypt the plaintext this round.
+        The rotated key halves from step 2 are used in the next round.
+        The block of data is split into 32-bit long halves.
+        One half is subject to an expansion permutation, increasing its size to 48 bits.
+        The output of the sixth step is subjected to an XOR operation with the 48-bit key from step 3.
+        The output of the seventh step is fed into an S-Box, which substitutes the key bits and reduces the size from 48 to 32 bits.
+        The output of the eight step is fed into a P-Box to permute the bits.
+        The output of the ninth step is subjected to a XOR operation with the other half of the data block. The two halves are swapped and become the input for the next round.

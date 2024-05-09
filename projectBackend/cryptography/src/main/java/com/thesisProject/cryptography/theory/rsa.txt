@@ -1,0 +1,21 @@
+Step 1: Generating Keys
+
+To start, we need to generate two large prime numbers, p and q. These primes should be of roughly equal length and their product should be much larger than the message we want to encrypt.
+
+We can generate the primes using any primality testing algorithm, such as the Miller-Rabin test. Once we have the two primes, we can compute their product n = p*q, which will be the modulus for our RSA system.
+
+Next, we need to choose an integer e such that 1 < e < phi(n) and gcd(e, phi(n)) = 1, where phi(n) = (p-1)*(q-1) is Euler’s totient function. This value of e will be the public key exponent.
+
+To compute the private key exponent d, we need to find an integer d such that d*e = 1 (mod phi(n)). This can be done using the extended Euclidean algorithm.
+
+Our public key is (n, e) and our private key is (n, d).
+
+Step 2: Encryption
+
+To encrypt a message m, we need to convert it to an integer between 0 and n-1. This can be done using a reversible encoding scheme, such as ASCII or UTF-8.
+
+Once we have the integer representation of the message, we compute the ciphertext c as c = m^e (mod n). This can be done efficiently using modular exponentiation algorithms, such as binary exponentiation.
+
+Step 3: Decryption
+
+To decrypt the ciphertext c, we compute the plaintext m as m = c^d (mod n). Again, we can use modular exponentiation algorithms to do this efficiently.
